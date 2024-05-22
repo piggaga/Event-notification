@@ -3,12 +3,25 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 function scheduleNotification() {
-    const eventName = document.getElementById('eventName').value;
-    const eventDate = document.getElementById('eventDate').value;
-    const eventTime = document.getElementById('eventTime').value;
-    const eventType = document.getElementById('eventType').value;
-    const dailyNotification = document.getElementById('dailyNotification').checked;
+    const eventNameInput = document.getElementById('eventName');
+    const eventDateInput = document.getElementById('eventDate');
+    const eventTimeInput = document.getElementById('eventTime');
+    const eventTypeInput = document.getElementById('eventType');
+    const dailyNotificationInput = document.getElementById('dailyNotification');
 
+    // 检查元素是否存在
+    if (!eventNameInput || !eventDateInput || !eventTimeInput || !eventTypeInput || !dailyNotificationInput) {
+        console.error("Element not found.");
+        return;
+    }
+
+    const eventName = eventNameInput.value;
+    const eventDate = eventDateInput.value;
+    const eventTime = eventTimeInput.value;
+    const eventType = eventTypeInput.value;
+    const dailyNotification = dailyNotificationInput.checked;
+
+    // 检查是否填写了所有必要信息
     if (!eventName || !eventDate || !eventTime) {
         alert('請填寫所有必要的資訊');
         return;
@@ -144,4 +157,49 @@ function exportEvents() {
 
     // 触发点击下载链接
     link.click();
+}
+
+function scheduleEventNotification(event) {
+    if ("Notification" in window) {
+        Notification.requestPermission().then(permission => {
+            if (permission === "granted") {
+                const eventDateTime = new Date(`${event.date}T${event.time}`).getTime();
+                const currentTime = Date.now();
+                const delay = eventDateTime - currentTime;
+
+                if (delay > 0) {
+                    setTimeout(() => {
+                        showNotification(event);
+                        if (event.daily) {
+                            setDailyNotification(event);
+                        }
+                    }, delay);
+                } else {
+                    alert('活動日期和時間必須是未來的時間');
+                }
+            } else {
+                console.log("Notification permission denied.");
+            }
+        });
+    } else {
+        console.log("This browser does not support notifications.");
+    }
+}
+
+function showNotification(event) {
+    new Notification("活動通知", {
+        body: `活動名稱: ${event.name}\n活動日期: ${event.date}\n活動時間: ${event.time}`,
+        icon: "path/to/icon.png" // 可選
+    });
+}
+
+function setDailyNotification(event) {
+    const oneDay = 24 * 60 * 60 * 1000;
+    const nextNotificationTime = new Date().getTime() + oneDay;
+    const delay = nextNotificationTime - Date.now();
+
+    setTimeout(() => {
+        showNotification(event);
+        setDailyNotification(event);
+    }, delay);
 }
