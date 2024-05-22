@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>活動通知</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>活動通知</h1>
+    <form id="notificationForm">
+        <label for="eventName">活動名稱:</label>
+        <input type="text" id="eventName" name="eventName" required>
+        <br>
+        <label for="eventDate">活動日期:</label>
+        <input type="date" id="eventDate" name="eventDate" required>
+        <br>
+        <label for="eventTime">通知時間:</label>
+        <input type="time" id="eventTime" name="eventTime" required>
+        <br>
+        <label for="eventType">活動類型:</label>
+        <select id="eventType" name="eventType" required>
+            <option value="work">工作</option>
+            <option value="personal">個人</option>
+            <option value="others">其他</option>
+        </select>
+        <br>
+        <label for="dailyNotification">每天通知:</label>
+        <input type="checkbox" id="dailyNotification" name="dailyNotification">
+        <br>
+        <label for="reminder">提醒時間:</label>
+        <select id="reminder" name="reminder" required>
+            <option value="none">無</option>
+            <option value="10min">10 分鐘前</option>
+            <option value="30min">30 分鐘前</option>
+            <option value="1hour">1 小時前</option>
+            <option value="1day">1 天前</option>
+        </select>
+        <br>
+        <button type="button" onclick="scheduleNotification()">設置通知</button>
+    </form>
+
+    <h2>我的活動</h2>
+    <input type="text" id="searchBar" placeholder="搜尋活動..." onkeyup="searchEvents()">
+    <br>
+    <button onclick="sortEvents('name')">按名稱排序</button>
+    <button onclick="sortEvents('date')">按日期排序</button>
+    <br>
+    <button onclick="exportEvents()">匯出活動</button>
+    <ul id="eventList"></ul>
+    
+    <h2>已完成的活動</h2>
+    <ul id="completedEventList"></ul>
+
+    <div id="eventDetails" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeDetails()">&times;</span>
+            <p id="detailsContent"></p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
