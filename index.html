@@ -28,15 +28,6 @@
         <label for="dailyNotification">每天通知:</label>
         <input type="checkbox" id="dailyNotification" name="dailyNotification">
         <br>
-        <label for="reminder">提醒時間:</label>
-        <select id="reminder" name="reminder" required>
-            <option value="none">無</option>
-            <option value="10min">10 分鐘前</option>
-            <option value="30min">30 分鐘前</option>
-            <option value="1hour">1 小時前</option>
-            <option value="1day">1 天前</option>
-        </select>
-        <br>
         <button type="button" onclick="scheduleNotification()">設置通知</button>
     </form>
 
@@ -45,12 +36,8 @@
     <br>
     <button onclick="sortEvents('name')">按名稱排序</button>
     <button onclick="sortEvents('date')">按日期排序</button>
-    <br>
     <button onclick="exportEvents()">匯出活動</button>
     <ul id="eventList"></ul>
-    
-    <h2>已完成的活動</h2>
-    <ul id="completedEventList"></ul>
 
     <div id="eventDetails" class="modal">
         <div class="modal-content">
